@@ -5,19 +5,24 @@ import (
 	"database/sql"
 )
 
-type Store struct {
-	*Queries
-	db *sql.DB
+type Store interface {
+	Querier
+	TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error)
 }
 
-func NewStore(db *sql.DB) *Store {
-	return &Store{
+type SQLStore struct {
+	db *sql.DB
+	*Queries
+}
+
+func NewStore(db *sql.DB) Store {
+	return &SQLStore{
 		db:      db,
 		Queries: New(db),
 	}
 }
 
-func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
+func (store *SQLStore) execTx(ctx context.Context, fn func(*Queries) error) error {
 	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
@@ -47,7 +52,7 @@ type TransferTxResult struct {
 	ToEntry     Entry    `json:"to_entry"`
 }
 
-func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error) {
+func (store *SQLStore) TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
 	err := store.execTx(ctx, func(q *Queries) error {
@@ -87,25 +92,6 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		if arg.FromAccountID > arg.ToAccountID {
 			result.ToAccount, result.FromAccount, err = addMoney(ctx, q, arg.ToAccountID, arg.Amount, arg.FromAccountID, -arg.Amount)
 		}
-
-		//result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
-		//	ID:     arg.FromAccountID,
-		//	Amount: -arg.Amount,
-		//})
-		//
-		//if err != nil {
-		//	return err
-		//}
-		//
-		//result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
-		//
-		//	ID:     arg.ToAccountID,
-		//	Amount: arg.Amount,
-		//})
-		//
-		//if err != nil {
-		//	return err
-		//}
 
 		return nil
 	})

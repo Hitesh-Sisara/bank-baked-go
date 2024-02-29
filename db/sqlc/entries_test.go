@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Hitesh-siara/bank-app-go/util"
+	"github.com/Hitesh-Sisara/bank-app-go/util"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,12 +26,12 @@ func creareRandomEntry(t *testing.T, account Account) Entry {
 }
 
 func TestCreateEntry(t *testing.T) {
-	account := createRandomAccount(t)
+	account := CreateRandomAccount(t)
 	creareRandomEntry(t, account)
 }
 
 func TestGetEntry(t *testing.T) {
-	account := createRandomAccount(t)
+	account := CreateRandomAccount(t)
 	entry1 := creareRandomEntry(t, account)
 	entry2, err := testQueries.GetEntry(context.Background(), entry1.ID)
 	require.NoError(t, err)
@@ -43,7 +43,7 @@ func TestGetEntry(t *testing.T) {
 }
 
 func TestListEntries(t *testing.T) {
-	account := createRandomAccount(t)
+	account := CreateRandomAccount(t)
 	for i := 0; i < 10; i++ {
 		creareRandomEntry(t, account)
 	}
@@ -60,7 +60,7 @@ func TestListEntries(t *testing.T) {
 }
 
 func TestUpdateEntry(t *testing.T) {
-	account := createRandomAccount(t)
+	account := CreateRandomAccount(t)
 	entry1 := creareRandomEntry(t, account)
 	arg := UpdateEntryParams{
 		ID:     entry1.ID,
@@ -76,7 +76,7 @@ func TestUpdateEntry(t *testing.T) {
 }
 
 func TestDeleteEntry(t *testing.T) {
-	account := createRandomAccount(t)
+	account := CreateRandomAccount(t)
 	entry1 := creareRandomEntry(t, account)
 	err := testQueries.DeleteEntry(context.Background(), entry1.ID)
 	require.NoError(t, err)

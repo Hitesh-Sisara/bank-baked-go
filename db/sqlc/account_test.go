@@ -6,19 +6,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Hitesh-siara/bank-app-go/util"
+	"github.com/Hitesh-Sisara/bank-app-go/util"
 	"github.com/stretchr/testify/require"
 )
 
-
-func createRandomAccount(t *testing.T) Account {
+func CreateRandomAccount(t *testing.T) Account {
 	arg := CreateAccountParams{
 		Owner:    util.RandomOwner(),
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
 
-	account , err := testQueries.CreateAccount(context.Background(), arg)
+	account, err := testQueries.CreateAccount(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, account)
 
@@ -31,12 +30,13 @@ func createRandomAccount(t *testing.T) Account {
 
 	return account
 }
+
 func TestCreateAccount(t *testing.T) {
-	createRandomAccount(t)
+	CreateRandomAccount(t)
 }
 
 func TestGetAccount(t *testing.T) {
-	account1 := createRandomAccount(t)
+	account1 := CreateRandomAccount(t)
 	account2, err := testQueries.GetAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, account2)
@@ -49,7 +49,7 @@ func TestGetAccount(t *testing.T) {
 }
 
 func TestDeleteAccount(t *testing.T) {
-	account1 := createRandomAccount(t)
+	account1 := CreateRandomAccount(t)
 	err := testQueries.DeleteAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
 
@@ -59,10 +59,9 @@ func TestDeleteAccount(t *testing.T) {
 	require.Empty(t, account2)
 }
 
-
 func TestListAccount(t *testing.T) {
 	for i := 0; i < 10; i++ {
-		  createRandomAccount(t)
+		CreateRandomAccount(t)
 	}
 
 	arg := ListAccountsParams{

@@ -2,9 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"github.com/Hitesh-siara/bank-app-go/api"
-	db "github.com/Hitesh-siara/bank-app-go/db/sqlc"
-	"github.com/Hitesh-siara/bank-app-go/util"
+	"github.com/Hitesh-Sisara/bank-app-go/api"
+	db "github.com/Hitesh-Sisara/bank-app-go/db/sqlc"
+	"github.com/Hitesh-Sisara/bank-app-go/util"
 	"log"
 
 	_ "github.com/lib/pq"
