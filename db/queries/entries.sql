@@ -25,6 +25,8 @@ SET amount = $1
 WHERE id = $2
 RETURNING *;
 
+--
+
 -- name: DeleteEntry :exec
 DELETE FROM entries
 WHERE id = $1;

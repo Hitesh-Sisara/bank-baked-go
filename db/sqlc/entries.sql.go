@@ -36,6 +36,7 @@ func (q *Queries) CreateEntry(ctx context.Context, arg CreateEntryParams) (Entry
 }
 
 const deleteEntry = `-- name: DeleteEntry :exec
+
 DELETE FROM entries
 WHERE id = $1
 `
