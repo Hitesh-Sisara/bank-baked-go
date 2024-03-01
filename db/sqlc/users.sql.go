@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"time"
 )
 
 const createUser = `-- name: CreateUser :one
@@ -15,7 +16,7 @@ INSERT INTO Users (
 ) VALUES (
 $1, $2, $3, $4
 )
-RETURNING username, hashed_password, full_name, email, password_changed_at, created_at
+RETURNING username, full_name, email, password_changed_at, created_at
 `
 
 type CreateUserParams struct {
@@ -25,17 +26,24 @@ type CreateUserParams struct {
 	Email          string `json:"email"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+type CreateUserRow struct {
+	Username          string    `json:"username"`
+	FullName          string    `json:"full_name"`
+	Email             string    `json:"email"`
+	PasswordChangedAt time.Time `json:"password_changed_at"`
+	CreatedAt         time.Time `json:"created_at"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error) {
 	row := q.db.QueryRowContext(ctx, createUser,
 		arg.Username,
 		arg.HashedPassword,
 		arg.FullName,
 		arg.Email,
 	)
-	var i User
+	var i CreateUserRow
 	err := row.Scan(
 		&i.Username,
-		&i.HashedPassword,
 		&i.FullName,
 		&i.Email,
 		&i.PasswordChangedAt,

@@ -4,7 +4,7 @@ INSERT INTO Users (
 ) VALUES (
 $1, $2, $3, $4
 )
-RETURNING *;
+RETURNING username, full_name, email, password_changed_at, created_at;
 
 
 -- name: GetUser :one
