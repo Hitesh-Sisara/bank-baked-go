@@ -29,7 +29,8 @@ func (server *Server) createAccount(ctx *gin.Context) {
 	account, err := server.store.CreateAccount(ctx, arg)
 	if err != nil {
 
-		if pqERR, ok := err.(*pq.Error); ok {
+		var pqERR *pq.Error
+		if errors.As(err, &pqERR) {
 			switch pqERR.Code.Name() {
 			case "foreign_key_violation", "unique_violation":
 				ctx.JSON(http.StatusForbidden, errorResponse(err))
