@@ -4,10 +4,8 @@ import (
 	"math/rand"
 )
 
-
-
 func RandomInt(min, max int64) int64 {
-	return min + rand.Int63n(max - min + 1)
+	return min + rand.Int63n(max-min+1)
 }
 
 func RandomString(n int) string {
@@ -31,4 +29,16 @@ func RandomCurrency() string {
 	currencies := []string{"USD", "INR", "EUR"}
 	n := len(currencies)
 	return currencies[rand.Intn(n)]
+}
+
+func RandomEmail() string {
+	return RandomString(6) + "@gmail.com"
+}
+
+func RandomPassword() string {
+	return RandomString(10)
+}
+
+func RandomFullName() string {
+	return RandomString(6) + " " + RandomString(6)
 }

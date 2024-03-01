@@ -13,6 +13,12 @@ migrateup:
 migratedown:
 	migrate -path db/migrations -database "postgresql://hit:hitsara@localhost:5432/simple_bank?sslmode=disable" -verbose down
 
+migratedown1:
+	migrate -path db/migrations -database "postgresql://hit:hitsara@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
+
+migrateup1:
+	migrate -path db/migrations -database "postgresql://hit:hitsara@localhost:5432/simple_bank?sslmode=disable" -verbose up 1
+
 sqlc:
 	sqlc generate
 
@@ -27,4 +33,4 @@ mock:
 
 
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock migratedown1 migrateup1
